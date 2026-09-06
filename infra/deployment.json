@@ -1,0 +1,25 @@
+{
+  "project": "nataliwisher-portfolio",
+  "region": "us-east-1",
+  "bucket": "nataliwisher-portfolio-533267008693",
+  "cloudfront_distribution_id": "E1LBCAP3SYQ78D",
+  "cloudfront_domain": "d2ebj1pzhgdr1.cloudfront.net",
+  "origin_access_control_id": "E2XCQNHQ00UWP2",
+  "certificate_arn": "arn:aws:acm:us-east-1:533267008693:certificate/6aed63e0-5243-45a4-af6e-c3a1e9593add",
+  "custom_domain_status": "Pending DNS validation and CloudFront alias attachment",
+  "github_status": "Source and GitHub Actions workflow published",
+  "dns_validation": [
+    {
+      "type": "CNAME",
+      "name": "_adf7edb3f03c0f6d94eab5fa8d6e57b4.nataliwisher.com",
+      "value": "_ae31f718b4f093f5ef7c5757b0d96c14.jkddzztszm.acm-validations.aws"
+    },
+    {
+      "type": "CNAME",
+      "name": "_38485fc4d96ee8138c1e99a588797944.www.nataliwisher.com",
+      "value": "_fd53e43f7123640045d79d489fbc01bb.jkddzztszm.acm-validations.aws"
+    }
+  ],
+  "github_repository": "wisheradam/Natali-wisher-product-designer",
+  "deploy_role_arn": "arn:aws:iam::533267008693:role/NataliPortfolioGitHubDeploy"
+}
