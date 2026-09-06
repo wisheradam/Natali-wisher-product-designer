@@ -1,0 +1,34 @@
+name: Deploy portfolio to AWS
+on:
+  push:
+    branches: [main]
+    paths: ['dist/**', '.github/workflows/deploy.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: natali-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate entrypoint
+        run: test -s dist/index.html
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::533267008693:role/NataliPortfolioGitHubDeploy
+          aws-region: us-east-1
+      - name: Upload site
+        run: aws s3 sync dist/ s3://nataliwisher-portfolio-533267008693/ --cache-control 'public,max-age=300' --no-progress
+      - name: Refresh CDN
+        run: |
+          INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id E1LBCAP3SYQ78D --paths '/*' --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed --distribution-id E1LBCAP3SYQ78D --id "$INVALIDATION_ID"
+      - name: Verify published page
+        run: |
+          curl --fail --silent --show-error --retry 3 https://d2ebj1pzhgdr1.cloudfront.net/ -o /tmp/live.html
+          cmp dist/index.html /tmp/live.html
